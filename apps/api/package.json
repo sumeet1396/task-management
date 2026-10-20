@@ -1,0 +1,7 @@
+{
+  "name": ".",
+  "version": "1.0.0",
+  "description": "Backend system for Task management APP",
+  "main": "index.js",
+  "license": "MIT"
+}

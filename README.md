@@ -16,23 +16,29 @@ From the repository root:
 docker compose up -d
 ```
 
-Copy the API environment file and install dependencies:
+Install dependencies for all workspaces (from the repository root):
+
+```bash
+yarn install
+```
+
+Copy the API environment file:
 
 ```bash
 cp apps/api/.env.example apps/api/.env
-yarn --cwd apps/api install
 ```
 
 Apply versioned SQL migrations (schema + development seed):
 
 ```bash
-yarn --cwd apps/api migrate
+yarn migrate
 ```
 
-Start the API:
+Start the API (or the whole stack):
 
 ```bash
-yarn --cwd apps/api dev
+yarn dev --filter=@taskmanagement/api
+# or: yarn dev   # API + web in parallel
 ```
 
 The server listens on [http://127.0.0.1:4000](http://127.0.0.1:4000). In development, requests run as the seeded user from `DEV_USER_ID` in `apps/api/.env`.
@@ -59,12 +65,33 @@ curl -s \
 
 Invalid titles (empty or over 100 characters) return HTTP 400 with `error.code` `VALIDATION_ERROR`.
 
+## Monorepo scripts (Turborepo)
+
+Run these from the repository root:
+
+| Script           | Description                                      |
+| ---------------- | ------------------------------------------------ |
+| `yarn install`   | Install dependencies for root, API, and web      |
+| `yarn build`     | Build all packages                               |
+| `yarn dev`       | Start dev servers (persistent; runs API and web) |
+| `yarn typecheck` | TypeScript checks across packages                |
+| `yarn lint`      | ESLint (web)                                     |
+| `yarn test`      | Tests (API integration suite)                    |
+| `yarn migrate`   | Apply API database migrations                    |
+
+Target one app with [filters](https://turbo.build/repo/docs/reference/run#--filter):
+
+```bash
+yarn dev --filter=@taskmanagement/api
+yarn build --filter=@taskmanagement/web
+```
+
 ## Integration tests
 
 PostgreSQL must be running (`docker compose up -d`). Tests use `DATABASE_URL` from `apps/api/.env`.
 
 ```bash
-yarn --cwd apps/api test:integration
+yarn test
 ```
 
 Tests cover successful task creation, validation failures, tenant isolation (403 for non-members), and PostgreSQL foreign-key constraints for cross-organization rows and non-member assignees.
@@ -78,6 +105,7 @@ Tests cover successful task creation, validation failures, tenant isolation (403
 | `apps/api/scripts/migrate.ts` | Applies pending migrations           |
 | `apps/api/src/`               | Express API                          |
 | `apps/web/`                   | Frontend (not required for Week 1)   |
+| `turbo.json`                  | Turborepo task pipeline              |
 
 ## Development identity (local only)
 

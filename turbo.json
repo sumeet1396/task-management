@@ -1,0 +1,41 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**"]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "typecheck": {
+      "dependsOn": ["^build"]
+    },
+    "lint": {
+      "dependsOn": ["^build"]
+    },
+    "test": {
+      "cache": false,
+      "env": ["DATABASE_URL", "DEV_USER_ID", "NODE_ENV", "PORT"]
+    },
+    "test:integration": {
+      "cache": false,
+      "env": ["DATABASE_URL", "DEV_USER_ID", "NODE_ENV", "PORT"]
+    },
+    "migrate": {
+      "cache": false,
+      "env": ["DATABASE_URL"]
+    },
+    "start": {
+      "dependsOn": ["build"],
+      "cache": false,
+      "persistent": true
+    },
+    "preview": {
+      "dependsOn": ["build"],
+      "cache": false,
+      "persistent": true
+    }
+  }
+}

@@ -128,3 +128,29 @@ Billing, mobile apps, microservices, Kubernetes, AI features, custom permission 
 ## 12. Assumptions
 
 Web only, desktop-first, English, single region; under 100 members and 100,000 tasks per org; single-engineer delivery.
+
+## 13. Week 1 Acceptance Criteria — Foundation
+
+The first vertical slice is complete when:
+
+1. PostgreSQL starts locally through Docker Compose.
+2. A versioned migration creates organizations, users,
+   organization memberships, projects, and tasks.
+3. Seed data creates one organization, one member, and one project.
+4. The API can create and list tasks for that project.
+5. Invalid task titles receive a consistent 400 response.
+6. A user without membership cannot read or create tasks in the organization.
+7. PostgreSQL constraints reject cross-organization project/task relationships
+   and assignments to non-members.
+8. Automated integration tests verify successful creation, validation failures,
+   and tenant isolation.
+9. A new developer can follow the README to start the database and API.
+
+### Explicitly deferred from Week 1
+
+Authentication flows, invitations, password reset, real-time collaboration,
+chat, notifications, Redis, background workers, reporting, and deployment.
+
+For local development only, a seeded user may be selected through a
+development-only identity setting. This mechanism must be disabled outside
+development and must not be treated as production authentication.

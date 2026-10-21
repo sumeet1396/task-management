@@ -1,0 +1,20 @@
+services:
+  postgres:
+    image: postgres:17
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: taskmanagement
+      POSTGRES_USER: taskmanagement
+      POSTGRES_PASSWORD: taskmanagement_dev
+    ports:
+      - '127.0.0.1:5433:5432'
+    volumes:
+      - taskmanagement_postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U taskmanagement -d taskmanagement']
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  taskmanagement_postgres:

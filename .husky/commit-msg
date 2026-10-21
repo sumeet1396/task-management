@@ -1,0 +1,7 @@
+yarn --silent commitlint --edit "$1" || {
+  echo ""
+  echo "Commit rejected. Start your message with one of: feat: | task: | bug:"
+  echo "Example: git commit -m \"feat: add task filtering\""
+  echo "Fix the message and try again (your staged files are untouched)."
+  exit 1
+}
